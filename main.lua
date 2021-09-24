@@ -2,6 +2,7 @@ WINDOW_WIDTH = 1024
 WINDOW_HEIGHT = 576
 WIDTH = 640
 HEIGHT = 360
+font = love.graphics.newFont('LeagueSpartan-Bold.otf', 40)
 push = require 'lib/push'
 wf = require 'lib/windfield'
 Class = require 'lib/class'
@@ -15,6 +16,8 @@ alpha = 25
 require 'Player'
 require 'Map'
 require 'Enemy'
+
+state = 'start'
 
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -44,16 +47,6 @@ function love.load()
 
   animation = anim8.newAnimation(g('12-13', 8), 0.2)
 
-  for _, obj in ipairs(map.gameMap.layers['Moedas'].objects) do
-    coin = {
-              x = obj.x,
-              y = obj.y,
-              w = 18,
-              h = 18
-    }
-    table.insert(coins, coin)
-  end
-
   key = {}
   key.sprite = anim8.newAnimation(g('8 - 8', 2), 0.1)
 
@@ -67,6 +60,11 @@ function love.load()
   chest.x = map.gameMap.layers['Bau'].objects[1].x
   chest.y = map.gameMap.layers['Bau'].objects[1].y
   chest.visible = true
+
+  flag = {}
+
+  flag.x = map.gameMap.layers['Bandeira'].objects[1].x
+  flag.y = map.gameMap.layers['Bandeira'].objects[1].y
 
   delimiters = {}
 
@@ -98,10 +96,26 @@ function love.update(dt)
       cont = cont + 1
   end
 
-  if collides(key, player, 15) then
+  if collides(key, player, 15) and key.visible then
       key.visible = false
   end
 
+  if collides(flag, player, 15) then
+      state = 'finish'
+  end
+
+  if state ~= 'play' then
+    coins = {}
+    for _, obj in ipairs(map.gameMap.layers['Moedas'].objects) do
+      coin = {
+                x = obj.x,
+                y = obj.y,
+                w = 18,
+                h = 18
+      }
+      table.insert(coins, coin)
+    end
+  end
 
   if collides(chest, player, 15) and key.visible == false then
       chest.visible = false
@@ -115,36 +129,62 @@ function love.update(dt)
   end
 end
 
-
-function love.keypressed(key)
-  if key == 'w' then
-    player:jump()
-  end
-end
-
 function love.draw()
-  love.graphics.clear(135/255, 206/255, 235/255)
-  push:start()
-  cam:attach()
-  map:draw()
-  player:draw()
-  for _, e in ipairs(enemies) do
-    e:draw(dt)
+
+  if state == 'start' then
+    love.graphics.setFont(font)
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.printf('SeekingCoins', 0, WINDOW_HEIGHT/2-100, WINDOW_WIDTH, 'center')
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf('Pressione ENTER \n para jogar', 0, WINDOW_HEIGHT/2+50, WINDOW_WIDTH, 'center')
   end
-  for _, c in ipairs(coins) do
-    animation:draw(spritesheet, c.x, c.y, 0, 1, 1, 9, 9)
+  if state == 'play' then
+    love.graphics.clear(135/255, 206/255, 235/255)
+    push:start()
+    cam:attach()
+    map:draw()
+    for _, e in ipairs(enemies) do
+      e:draw(dt)
+    end
+    if key.visible then
+      key.sprite:draw(spritesheet, key.x, key.y, 0, 1, 1, 9, 9)
+    end
+    if chest.visible then
+      chest.sprite:draw(spritesheet, chest.x, chest.y+9, 0, 1, 1, 9, 9)
+    end
+    player:draw()
+    for _, c in ipairs(coins) do
+      animation:draw(spritesheet, c.x, c.y, 0, 1, 1, 9, 9)
+    end
+    world:draw()
+    cam:lookAt(player.x+200, HEIGHT-75)
+    cam:detach()
+    push:finish()
+    love.graphics.print(score.."/12 ")
+    animation:draw(spritesheet)
+    if key.visible == false then
+      key.sprite:draw(spritesheet)
+    end
   end
-  if key.visible then
-    key.sprite:draw(spritesheet, key.x, key.y, 0, 1, 1, 9, 9)
+  if state == 'gameOver' then
+    love.graphics.setFont(font)
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.printf('Você morreu!', 0, WINDOW_HEIGHT/2-50, WINDOW_WIDTH, 'center')
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf('Pressione ESPAÇO para tentar novamente', 0, WINDOW_HEIGHT/2+100, WINDOW_WIDTH, 'center')
   end
-  if chest.visible then
-    chest.sprite:draw(spritesheet, chest.x, chest.y+9, 0, 1, 1, 9, 9)
+  if state == 'finish' then
+    love.graphics.setFont(font)
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.printf('Você conseguiu chegar até o final\nParabéns', 0, WINDOW_HEIGHT/2-150, WINDOW_WIDTH, 'center')
+
+    if chest.visible then
+      love.graphics.printf('Você não pegou o baú do tesouro!', 0, WINDOW_HEIGHT/2, WINDOW_WIDTH, 'center')
+    end
+    love.graphics.printf('Moedas coletadas: '..score.. '/12', 0, WINDOW_HEIGHT/2+50, WINDOW_WIDTH, 'center')
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf('Pressione ESPAÇO jogar novamente', 0, WINDOW_HEIGHT/2+100, WINDOW_WIDTH, 'center')
   end
-  world:draw()
-  cam:lookAt(player.x+200, HEIGHT-75)
-  cam:detach()
-  push:finish()
-  love.graphics.print(score.." X ")
 end
 
 function collides(a, b, c)
@@ -152,4 +192,22 @@ function collides(a, b, c)
     return true
   end
   return false
+end
+
+function love.keypressed(key)
+  if key == 'return' and state == 'start' then
+    state = 'play'
+  end
+
+  if key == 'w' and state == 'play' then
+    player:jump()
+  end
+
+  if key == 'space' and (state == 'gameOver' or state == 'finish') then
+    player.body:setX(10)
+    player.body:setY(300)
+    player.isdead = false
+    score = 0
+    state = 'play'
+  end
 end

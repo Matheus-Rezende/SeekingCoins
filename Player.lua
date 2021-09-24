@@ -23,16 +23,16 @@ function Player:init(world)
   self.body:setFixedRotation(true)
 
   self.grounded = false
-  self.spike = false
+  --self.spike = false
 
   self.direction = 1
   self.isdead = false
 end
 
 function Player:update(dt)
-  if self.isdead then
-    return
-  end
+  -- if self.isdead then
+  --   return
+  -- end
 
   self.x, self.y = self.body:getPosition()
   if love.keyboard.isDown('a') then
@@ -58,11 +58,10 @@ function Player:update(dt)
   --               self.y + self.ch/2, self.cw, 4, {'Espinhos'})
 
   if #colliders_spike > 0 then
-    self.spike = true
-    self.body:destroy()
+    -- self.spike = true
     self.isdead = true
-  else
-    self.spike = false
+  -- else
+  --   self.spike = false
   end
 
   if #colliders > 0 then
@@ -72,16 +71,20 @@ function Player:update(dt)
   end
 
   if self.body:enter('Enemy') then
-    self.body:destroy()
     self.isdead = true
+  end
+
+  if self.isdead then
+    key.visible = true
+    state = 'gameOver'
   end
   self.curAnimation:update(dt)
 end
 
 function Player:draw()
-  if self.isdead then
-    return
-  end
+  -- if self.isdead then
+  --   return
+  -- end
   self.curAnimation:draw(self.spritesheet,
                     self.body:getX(),
                     self.body:getY(),
@@ -90,6 +93,6 @@ end
 
 function Player:jump()
   if self.grounded then
-    self.body:applyLinearImpulse(0, -170)
+    self.body:applyLinearImpulse(0, -175)
   end
 end
