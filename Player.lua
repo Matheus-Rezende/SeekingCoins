@@ -70,16 +70,29 @@ function Player:update(dt)
     self.grounded = false
   end
 
-  -- if self.body:enter('Enemy') then
-  --   self.isdead = true
-  --   --sound.hit:play()
-  -- end
+  if self.body:enter('Enemy') then
+    self.isdead = true
+  end
 
-  if self.isdead then
+  if self.isdead and state ~= 'gameOver' then
     key.visible = true
+    sound.hit:play()
     state = 'gameOver'
   end
   self.curAnimation:update(dt)
+
+  if subindo then
+    world:setGravity(0, 100)
+    self.y = self.y - 5 * dt
+    self.body:setY(self.y)
+  else
+    world:setGravity(0, 800)
+  end
+
+  if collides(limite_escada, self, 15) and subindo then
+    subindo = false
+    self.body: applyLinearImpulse(20, -20)
+  end
 end
 
 function Player:draw()
@@ -93,7 +106,7 @@ function Player:draw()
 end
 
 function Player:jump()
-  if self.grounded then
-    self.body:applyLinearImpulse(0, -400)
+  if self.grounded and subindo == false then
+    self.body:applyLinearImpulse(0, -21)
   end
 end

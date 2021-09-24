@@ -23,6 +23,7 @@ music_state = true
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
   push:setupScreen(WIDTH, HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT)
+  love.window.setTitle("SeekingCoins")
 
   world = wf.newWorld(0, 800, false)
   world:setQueryDebugDrawing(true)
@@ -67,6 +68,17 @@ function love.load()
   flag.x = map.gameMap.layers['Bandeira'].objects[1].x
   flag.y = map.gameMap.layers['Bandeira'].objects[1].y
 
+  limite_escada = {}
+
+  limite_escada.x = map.gameMap.layers['Limite_e'].objects[1].x
+  limite_escada.y = map.gameMap.layers['Limite_e'].objects[1].y
+
+  ladder = {}
+  for _, obj in ipairs(map.gameMap.layers['Escada'].objects) do
+    l = {x = obj.x, y = obj.y}
+    table.insert(ladder, l)
+  end
+
   delimiters = {}
 
   for _, obj in ipairs(map.gameMap.layers['Delimitador'].objects) do
@@ -102,7 +114,7 @@ function love.update(dt)
 
   local cont = 1
   for _, c in ipairs(coins) do
-    if collides(c, player, 15) then
+    if collides(c, player, 15) and state ~= 'gameOver' then
         table.remove(coins, cont)
         score = score + 1
         sound.coin:play()
@@ -115,7 +127,7 @@ function love.update(dt)
       sound.key:play()
   end
 
-  if collides(flag, player, 15) then
+  if collides(flag, player, 15) and state ~= 'finish' then
       sound.finish:play()
       state = 'finish'
   end
@@ -223,12 +235,20 @@ function love.keypressed(key)
   if key == 'return' and state == 'start' then
     state = 'play'
   end
-
   if key == 'w' and state == 'play' then
-    player:jump()
-    if player.grounded then
-      sound.jump:play()
+    for _, e in ipairs(ladder) do
+      if collides(e, player, 15) then
+          subindo = true
+      else
+        subindo = false
+        player:jump()
+        if player.grounded then
+          sound.jump:play()
+        end
+      end
     end
+  else
+    subindo = false
   end
 
   if key == 'space' and (state == 'gameOver' or state == 'finish') then

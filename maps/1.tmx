@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="105">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="12" nextobjectid="116">
  <editorsettings>
   <export target="1.lua" format="lua"/>
  </editorsettings>
@@ -21,7 +21,7 @@
 0,0,0,0,52,18,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,112,0,
 0,0,0,0,72,38,39,39,39,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,0,0,0,0,0,0,0,0,0,0,0,0,132,0,
 0,0,0,0,72,38,39,39,39,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,50,50,51,0,0,0,0,0,0,0,0,103,103,103,103,
-0,0,0,0,72,58,59,98,59,60,0,0,0,0,0,0,15,14,13,14,14,14,14,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,123,123,123,123,
+0,0,0,0,72,58,59,98,59,60,0,0,0,0,0,15,14,14,13,14,14,14,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,123,123,123,123,
 0,0,0,0,72,0,0,97,0,0,0,0,0,0,0,0,0,0,33,0,0,0,0,0,0,0,0,0,0,0,103,103,0,0,0,0,0,0,0,0,0,0,0,0,0,0,123,123,123,123,
 0,0,0,0,72,0,0,117,0,0,0,0,0,0,0,0,0,0,53,0,0,0,0,0,0,0,103,0,0,0,0,123,0,145,0,0,145,0,0,0,0,0,0,0,0,0,123,123,123,123,
 0,0,0,0,72,0,126,138,127,126,0,0,0,0,125,126,0,0,73,128,0,0,0,0,0,0,123,0,0,0,0,0,103,103,103,103,103,103,103,103,103,103,103,0,0,0,123,123,123,123,
@@ -35,8 +35,11 @@
   <object id="70" x="504" y="324" width="18" height="18"/>
   <object id="72" x="774" y="270" width="18" height="18"/>
   <object id="74" x="576" y="270" width="18" height="18"/>
-  <object id="77" x="432" y="216" width="18" height="18"/>
-  <object id="78" x="288" y="216" width="18" height="18"/>
+  <object id="77" x="414" y="216" width="18" height="18"/>
+  <object id="78" x="270" y="216" width="18" height="18"/>
+ </objectgroup>
+ <objectgroup id="11" name="Limite_e">
+  <object id="115" x="72" y="162" width="18" height="18"/>
  </objectgroup>
  <objectgroup id="7" name="Chave">
   <object id="81" x="738" y="324" width="18" height="18"/>
@@ -54,12 +57,22 @@
   <object id="66" x="306" y="288" width="18" height="18"/>
   <object id="104" x="738" y="270" width="18" height="18"/>
  </objectgroup>
+ <objectgroup id="10" name="Escada">
+  <object id="105" x="72" y="180" width="18" height="18"/>
+  <object id="106" x="72" y="198" width="18" height="18"/>
+  <object id="107" x="72" y="216" width="18" height="18"/>
+  <object id="108" x="72" y="234" width="18" height="18"/>
+  <object id="109" x="72" y="252" width="18" height="18"/>
+  <object id="110" x="72" y="270" width="18" height="18"/>
+  <object id="111" x="72" y="288" width="18" height="18"/>
+  <object id="112" x="72" y="306" width="18" height="18"/>
+ </objectgroup>
  <objectgroup id="2" name="Solidos">
   <object id="18" x="0.333333" y="324" width="107.333" height="36"/>
   <object id="19" x="108" y="306.333" width="72.3333" height="53.3333"/>
   <object id="20" x="91.3333" y="181" width="87.3333" height="69.6667"/>
   <object id="21" x="252" y="306.333" width="107.667" height="53"/>
-  <object id="22" x="288" y="234.333" width="144" height="17.3333"/>
+  <object id="22" x="270" y="234.416" width="144" height="17.1667"/>
   <object id="24" x="575.982" y="288.045" width="179.927" height="18.0313"/>
   <object id="28" x="828" y="215.333" width="72.3333" height="144.667"/>
   <object id="29" x="612" y="216" width="72" height="18"/>
@@ -70,7 +83,7 @@
   <object id="91" x="558" y="252" width="18" height="36"/>
   <object id="93" x="540.25" y="251.75" width="18" height="18"/>
   <object id="94" x="486" y="306" width="18" height="36"/>
-  <object id="103" x="1" y="223.667" width="3" height="100"/>
+  <object id="103" x="1" y="3.667" width="3" height="320"/>
  </objectgroup>
  <objectgroup id="4" name="Espinhos">
   <object id="48" x="774.25" y="332.25" width="53.875" height="9.54545"/>
