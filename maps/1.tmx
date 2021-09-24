@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="103">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="105">
  <editorsettings>
   <export target="1.lua" format="lua"/>
  </editorsettings>
@@ -52,6 +52,7 @@
   <object id="64" x="774" y="144" width="18" height="18"/>
   <object id="65" x="108" y="162" width="18" height="18"/>
   <object id="66" x="306" y="288" width="18" height="18"/>
+  <object id="104" x="738" y="270" width="18" height="18"/>
  </objectgroup>
  <objectgroup id="2" name="Solidos">
   <object id="18" x="0.333333" y="324" width="107.333" height="36"/>
@@ -69,6 +70,7 @@
   <object id="91" x="558" y="252" width="18" height="36"/>
   <object id="93" x="540.25" y="251.75" width="18" height="18"/>
   <object id="94" x="486" y="306" width="18" height="36"/>
+  <object id="103" x="1" y="223.667" width="3" height="100"/>
  </objectgroup>
  <objectgroup id="4" name="Espinhos">
   <object id="48" x="774.25" y="332.25" width="53.875" height="9.54545"/>

@@ -185,10 +185,10 @@ function love.draw()
     cam:lookAt(player.x+200, HEIGHT-75)
     cam:detach()
     push:finish()
-    love.graphics.print(score.."/12 ")
+    love.graphics.print(score.."/13 ")
     animation:draw(spritesheet, 110, -7.5, 0, 3, 3)
     if key.visible == false then
-      key.sprite:draw(spritesheet, 185, -7.5, 0, 3, 3)
+      key.sprite:draw(spritesheet, 450, -7.5, 0, 3, 3)
     end
   end
   if state == 'gameOver' then
@@ -206,7 +206,7 @@ function love.draw()
     -- if chest.visible then
     --   love.graphics.printf('Você não pegou o baú do tesouro!', 0, WINDOW_HEIGHT/2, WINDOW_WIDTH, 'center')
     -- end
-    love.graphics.printf('Moedas coletadas: '..score.. '/12', 0, WINDOW_HEIGHT/2+50, WINDOW_WIDTH, 'center')
+    love.graphics.printf('Moedas coletadas: '..score.. '/13', 0, WINDOW_HEIGHT/2+50, WINDOW_WIDTH, 'center')
     love.graphics.setColor(255, 255, 255)
     love.graphics.printf('Pressione ESPAÇO jogar novamente', 0, WINDOW_HEIGHT/2+100, WINDOW_WIDTH, 'center')
   end
@@ -226,7 +226,9 @@ function love.keypressed(key)
 
   if key == 'w' and state == 'play' then
     player:jump()
-    sound.jump:play()
+    if player.grounded then
+      sound.jump:play()
+    end
   end
 
   if key == 'space' and (state == 'gameOver' or state == 'finish') then
