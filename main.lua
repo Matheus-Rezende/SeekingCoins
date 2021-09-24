@@ -18,6 +18,7 @@ require 'Map'
 require 'Enemy'
 
 state = 'start'
+music_state = true
 
 function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -75,6 +76,18 @@ function love.load()
     }
     table.insert(delimiters, delimiter)
   end
+
+  sound = {}
+  sound.theme = love.audio.newSource("Yoshi Island.mp3", 'static')
+  sound.jump = love.audio.newSource("Jump.wav", 'static')
+  sound.coin = love.audio.newSource("Coin.wav", 'static')
+  sound.chest = love.audio.newSource("Chest.wav", 'static')
+  sound.key = love.audio.newSource("Key.wav", 'static')
+  sound.finish = love.audio.newSource("Finish.wav", 'static')
+  sound.hit = love.audio.newSource("Hit.wav", 'static')
+  --sound.point = love.audio.newSource("point.wav", 'static')
+  --sound.hit_wall = love.audio.newSource("blip.wav", 'static')
+
 end
 
 function love.update(dt)
@@ -92,15 +105,18 @@ function love.update(dt)
     if collides(c, player, 15) then
         table.remove(coins, cont)
         score = score + 1
+        sound.coin:play()
     end
       cont = cont + 1
   end
 
   if collides(key, player, 15) and key.visible then
       key.visible = false
+      sound.key:play()
   end
 
   if collides(flag, player, 15) then
+      sound.finish:play()
       state = 'finish'
   end
 
@@ -115,12 +131,15 @@ function love.update(dt)
       }
       table.insert(coins, coin)
     end
+    key.visible = true
+    chest.visible = true
   end
 
   if collides(chest, player, 15) and key.visible == false then
       chest.visible = false
       key.visible = nil
       score = score + 5
+      sound.chest:play()
       -- alpha = alpha - (dt * (255 / 3))
 	    -- if alpha < 0 then alpha = 0 end
       --
@@ -130,6 +149,12 @@ function love.update(dt)
 end
 
 function love.draw()
+
+  if not sound.theme:isPlaying() and music_state then
+    love.audio.play(sound.theme)
+    love.audio.setVolume(0.06)
+    music_state = true
+  end
 
   if state == 'start' then
     love.graphics.setFont(font)
@@ -156,14 +181,14 @@ function love.draw()
     for _, c in ipairs(coins) do
       animation:draw(spritesheet, c.x, c.y, 0, 1, 1, 9, 9)
     end
-    world:draw()
+    --world:draw()
     cam:lookAt(player.x+200, HEIGHT-75)
     cam:detach()
     push:finish()
     love.graphics.print(score.."/12 ")
-    animation:draw(spritesheet)
+    animation:draw(spritesheet, 110, -7.5, 0, 3, 3)
     if key.visible == false then
-      key.sprite:draw(spritesheet)
+      key.sprite:draw(spritesheet, 185, -7.5, 0, 3, 3)
     end
   end
   if state == 'gameOver' then
@@ -178,9 +203,9 @@ function love.draw()
     love.graphics.setColor(255, 0, 0)
     love.graphics.printf('Você conseguiu chegar até o final\nParabéns', 0, WINDOW_HEIGHT/2-150, WINDOW_WIDTH, 'center')
 
-    if chest.visible then
-      love.graphics.printf('Você não pegou o baú do tesouro!', 0, WINDOW_HEIGHT/2, WINDOW_WIDTH, 'center')
-    end
+    -- if chest.visible then
+    --   love.graphics.printf('Você não pegou o baú do tesouro!', 0, WINDOW_HEIGHT/2, WINDOW_WIDTH, 'center')
+    -- end
     love.graphics.printf('Moedas coletadas: '..score.. '/12', 0, WINDOW_HEIGHT/2+50, WINDOW_WIDTH, 'center')
     love.graphics.setColor(255, 255, 255)
     love.graphics.printf('Pressione ESPAÇO jogar novamente', 0, WINDOW_HEIGHT/2+100, WINDOW_WIDTH, 'center')
@@ -201,6 +226,7 @@ function love.keypressed(key)
 
   if key == 'w' and state == 'play' then
     player:jump()
+    sound.jump:play()
   end
 
   if key == 'space' and (state == 'gameOver' or state == 'finish') then

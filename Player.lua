@@ -70,9 +70,10 @@ function Player:update(dt)
     self.grounded = false
   end
 
-  if self.body:enter('Enemy') then
-    self.isdead = true
-  end
+  -- if self.body:enter('Enemy') then
+  --   self.isdead = true
+  --   --sound.hit:play()
+  -- end
 
   if self.isdead then
     key.visible = true
@@ -93,6 +94,6 @@ end
 
 function Player:jump()
   if self.grounded then
-    self.body:applyLinearImpulse(0, -175)
+    self.body:applyLinearImpulse(0, -400)
   end
 end
