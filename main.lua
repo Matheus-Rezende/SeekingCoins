@@ -103,8 +103,10 @@ function love.load()
 end
 
 function love.update(dt)
-  world:update(dt)
-  player:update(dt)
+  if state == 'play' then
+    world:update(dt)
+    player:update(dt)
+  end
   for _, e in ipairs(enemies) do
     e:update(dt)
   end
