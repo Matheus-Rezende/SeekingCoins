@@ -235,6 +235,8 @@ end
 
 function love.keypressed(key)
   if key == 'return' and state == 'start' then
+    player.body:setX(10)
+    player.body:setY(300)
     state = 'play'
   end
   if key == 'w' and state == 'play' then
